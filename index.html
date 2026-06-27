@@ -64,6 +64,14 @@
   .submit-btn:hover { background:#7d6030; }
   .success-msg { display:none; margin-top:14px; padding:14px; background:#f3f8f0; border:1px solid #bbd4b0; border-radius:2px; color:#4a7040; font-size:13px; text-align:center; }
   .sending-msg { display:none; margin-top:14px; padding:14px; background:#faf6ee; border:1px solid var(--color-gold-light); border-radius:2px; color:var(--color-gold); font-size:13px; text-align:center; }
+  .rib-modal { display:none; position:fixed; inset:0; z-index:999; background:rgba(46,36,22,0.48); align-items:center; justify-content:center; padding:22px; }
+  .rib-modal.on { display:flex; }
+  .rib-card { width:100%; max-width:430px; background:var(--color-cream); border:1px solid var(--color-gold-light); border-radius:4px; padding:34px 26px; text-align:center; position:relative; box-shadow:0 18px 50px rgba(0,0,0,0.18); }
+  .rib-close { position:absolute; top:12px; right:14px; background:none; border:none; font-size:26px; line-height:1; color:var(--color-text-muted); cursor:pointer; }
+  .rib-title { font-family:'Cormorant Garamond',serif; font-size:30px; font-weight:300; font-style:italic; color:var(--color-gold); margin-bottom:12px; }
+  .rib-line { font-size:13px; color:var(--color-text-muted); line-height:1.65; margin-bottom:16px; }
+  .rib-hidden { position:absolute; left:-9999px; opacity:0; }
+
 
   footer { text-align:center; padding:28px 24px 44px; border-top:1px solid var(--color-gold-light); font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:300; font-style:italic; color:var(--color-text-muted); }
 
@@ -151,6 +159,40 @@
       </form>
     </div>
   </section>
+
+<section class="section gift-section" data-lang="fr">
+  <div class="music-box">
+    <h2 class="music-intro">Notre lune de miel ❤️</h2>
+    <p class="music-intro">Bonne nouvelle : notre maison est déjà remplie d’amour… et d’objets !</p>
+    <p class="music-intro">Si vous souhaitez nous faire un cadeau, une participation à notre lune de miel serait le plus beau des présents.</p>
+    <p class="music-intro">Un virement est possible pour les amateurs de technologie, ou une petite boîte sera à votre disposition le jour J.</p>
+    <button class="submit-btn" onclick="openRibModal()">Obtenir le RIB</button>
+    <p class="music-intro"><strong>Merci du fond du cœur pour votre générosité et votre présence à nos côtés. ❤️</strong></p>
+  </div>
+</section>
+
+<section class="section gift-section" data-lang="en">
+  <div class="music-box">
+    <h2 class="music-intro">Our honeymoon ❤️</h2>
+    <p class="music-intro">Good news: our home is already filled with love… and objects!</p>
+    <p class="music-intro">If you would like to give us a gift, a contribution toward our honeymoon would be the most beautiful present.</p>
+    <p class="music-intro">A bank transfer is possible for those who prefer technology, or a small box will be available on the big day </p>
+    <button class="submit-btn" onclick="openRibModal()">Get bank details</button>
+    <p class="music-intro"><strong>Thank you from the bottom of our hearts for your generosity and for being by our side. ❤️</strong></p>
+  </div>
+</section>
+
+<section class="section gift-section" data-lang="vn">
+  <div class="music-box">
+    <h2 class="music-intro">Tin vui: ngôi nhà của chúng tôi đã đầy ắp tình yêu… và cả đồ đạc nữa! ❤️</h2>
+    <p class="music-intro">Ý tưởng cho món quà? Một khoản đóng góp cho chuyến trăng mật sẽ là món quà tuyệt vời nhất.</p>
+    <p class="music-intro">Dưới đây là thông tin ngân hàng nếu bạn yêu thích công nghệ, hoặc phong bì sẽ có ở bàn tiệc cho phong cách truyền thống.</p>
+  
+    <button class="submit-btn" onclick="openRibModal()">Xem thông tin ngân hàng</button>
+    <p class="music-intro"><strong>Xin chân thành cảm ơn từ tận đáy lòng vì sự hào phóng và vì đã luôn ở bên chúng tôi. ❤️</strong></p>
+  </div>
+</section>
+
 </div>
 
 <!-- EN -->
@@ -315,5 +357,47 @@ async function submitForm(e, l) {
 
 setLang('fr');
 </script>
+
+<div class="rib-modal" id="ribModal" onclick="closeRibModal(event)">
+  <div class="rib-card">
+    <button class="rib-close" onclick="closeRibModal()">×</button>
+    <h3 class="rib-title">RIB</h3>
+    <p class="rib-line"><strong>Titulaire :</strong><br>Sella Q ou Nguyen T</p>
+    <p class="rib-line"><strong>BIC :</strong><br>PSSTFRPPSCE</p>
+    <textarea class="rib-hidden" id="ibanValue">FR8320041010125885803C03326</textarea>
+    <button class="submit-btn" onclick="copyIBAN()">Copier l'IBAN</button>
+  </div>
+</div>
+
+
+<script>
+function openRibModal(){
+  var modal = document.getElementById('ribModal');
+  if(modal){ modal.classList.add('on'); }
+}
+function closeRibModal(event){
+  if(event && event.target && event.target.id !== 'ribModal'){ return; }
+  var modal = document.getElementById('ribModal');
+  if(modal){ modal.classList.remove('on'); }
+}
+function copyIBAN(){
+  var iban = 'FR8320041010125885803C03326';
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(iban);
+  } else {
+    var el = document.getElementById('ibanValue');
+    el.style.position = 'fixed';
+    el.style.left = '0';
+    el.select();
+    document.execCommand('copy');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+  }
+  var btn = event.target;
+  btn.innerHTML = "✓ IBAN copié";
+  setTimeout(function(){ btn.innerHTML = "Copier l'IBAN"; }, 2000);
+}
+</script>
+
 </body>
 </html>
